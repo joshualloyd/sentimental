@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "watch": "nodemon app.js",
-    "test": "mocha --watch --recursive -R spec"
+    "test": "mocha --watch --recursive -R spec",
+    "db:build": "node_modules/.bin/sequelize db:migrate"
   },
   "author": "Joshua Lloyd",
   "license": "ISC",

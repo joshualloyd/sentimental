@@ -1,0 +1,10 @@
+extends index.pug
+
+block content
+  h1 Upload your text
+    form(method="post" action="/documents")
+      label(for="name") Document Name
+      input(id="name" type="text" placeholder="Your document name" name="name" required)
+      label(for="body") Document Text
+      textarea(id="body" name="text")
+      button(type="submit") Upload
