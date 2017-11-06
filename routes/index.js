@@ -10,5 +10,6 @@ router.get('/', (req, res, next) => {
 // pipe all other requests through the route modules
 router.use(require('./authRoute'));
 // router.use(require('./foo'));
+router.use(require('./documentsRoute'));
 
 module.exports = router;
