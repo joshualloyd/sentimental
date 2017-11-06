@@ -13,4 +13,8 @@ router.use(require('./authRoute'));
 router.use(require('./documentsRoute'));
 router.use(require('./analysesRoute'));
 
+router.get('/test', (req, res, next) => {
+  res.render('react-test');
+});
+
 module.exports = router;
