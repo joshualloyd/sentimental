@@ -9,6 +9,8 @@ const flash = require('express-flash');
 
 require('dotenv').config();
 const port = process.env.PORT || 8080;
+app.locals.ibm_username = process.env.NLU_USERNAME;
+app.locals.ibm_password = process.env.NLU_PASSWORD;
 
 // using require('./models') to get the models may create more than one connection to the database. To avoid that, the models variable must be somehow singleton-esque. This can be achieved by attaching the models module to the application:
 app.set('models', require('./models')); //pulls in models/index.js by default. Index exports all the models you define in the models folder. So cool.
@@ -34,7 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 // This custom middleware adds the logged-in user's info to the locals variable,
 // so we can access it in the Pug templates
-app.use( (req, res, next) => {
+app.use((req, res, next) => {
   res.locals.session = req.session;
   // console.log('res.locals.session', res.locals.session);
   next();

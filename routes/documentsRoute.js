@@ -7,10 +7,12 @@ const {
   newDocument,
   showDocument,
   createDocument,
+  showDocuments
 } = require('../controllers/documentsCtrl');
 
 router.get('/documents/new', isLoggedIn, newDocument);
 router.get('/documents/:id', isLoggedIn, showDocument);
+router.get('/documents', isLoggedIn, showDocuments);
 router.post('/documents', isLoggedIn, createDocument);
 
 module.exports = router;

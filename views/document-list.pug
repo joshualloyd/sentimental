@@ -1,0 +1,7 @@
+extends index.pug
+
+block content
+  ul
+    each document in foundDocuments
+      a(href=`/documents/${document.id}`)
+        li= document.name
