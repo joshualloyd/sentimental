@@ -28,3 +28,18 @@ module.exports.showDocument = (req, res, next) => {
     })
     .catch(err => next(err));
 };
+
+module.exports.showDocuments = (req, res, next) => {
+  const { Document } = req.app.get('models');
+  Document
+    .findAll({
+      where: {
+        userId: req.session.passport.user.id
+      }
+    })
+    .then(foundDocuments => {
+      // res.json(foundDocuments);
+      res.render('document-list', { foundDocuments });
+    })
+    .catch(err => next(err));
+};

@@ -1,4 +1,8 @@
 if session.passport
   span #{session.passport.user.username}
+  a(href="/documents")
+    span View Documents
+  a(href="/analyses/document/1/new")
+    span Analyse Document
   form(method="POST")
     button(type="submit" formaction="/logout") logout
