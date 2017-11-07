@@ -5,12 +5,15 @@ const router = Router();
 
 const {
   newAnalysis,
-  showAnalysis,
+  showAnalysisResultsJSON,
+  showAnalysisArgumentsJSON,
   createAnalysis,
 } = require('../controllers/analysesCtrl');
 
 router.get('/analyses/document/:documentId/new', isLoggedIn, newAnalysis);
-router.get('/analyses/:id', isLoggedIn, showAnalysis);
+router.get('/analyses/:analysisId', isLoggedIn, showAnalysisResultsJSON);
+router.get('/analyses/arguments/:analysisId', isLoggedIn, showAnalysisArgumentsJSON);
+
 router.post('/analyses/document/:documentId', isLoggedIn, createAnalysis);
 
 module.exports = router;

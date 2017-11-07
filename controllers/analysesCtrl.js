@@ -14,12 +14,22 @@ module.exports.newAnalysis = (req, res, next) => {
     .catch(err => next(err));
 };
 
-module.exports.showAnalysis = (req, res, next) => {
+module.exports.showAnalysisResultsJSON = (req, res, next) => {
   const { Analysis } = req.app.get('models');
   Analysis
     .findById(req.params.analysisId)
     .then(foundAnalysis => {
-      res.json(foundAnalysis);
+      res.json(foundAnalysis.results);
+    })
+    .catch(err => next(err));
+};
+
+module.exports.showAnalysisArgumentsJSON = (req, res, next) => {
+  const { Analysis } = req.app.get('models');
+  Analysis
+    .findById(req.params.analysisId)
+    .then(foundAnalysis => {
+      res.json(foundAnalysis.arguments);
     })
     .catch(err => next(err));
 };
