@@ -7,9 +7,11 @@ const {
   newAnalysis,
   showAnalysis,
   createAnalysis,
+  createSentimentAnalysis
 } = require('../controllers/analysesCtrl');
 
 router.get('/analyses/document/:documentId/new', isLoggedIn, newAnalysis);
+router.get('/analyses/document/:documentId/new/sentiment', isLoggedIn, createSentimentAnalysis);
 router.get('/analyses/:id', isLoggedIn, showAnalysis);
 router.post('/analyses/document/:documentId', isLoggedIn, createAnalysis);
 
