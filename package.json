@@ -9,7 +9,8 @@
     "test": "mocha --watch --recursive -R spec",
     "db:build": "node_modules/.bin/sequelize db:migrate",
     "db:teardown": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "app:build": "browserify -e ./app-src/app.js -t babelify > ./public/app.js"
+    "app:build": "browserify -e ./app-src/app.js -t babelify > ./public/app.js",
+    "form:build": "browserify -e ./app-src/analysis-form.js -t babelify > ./public/analysisform.js"
   },
   "author": "Joshua Lloyd",
   "license": "ISC",

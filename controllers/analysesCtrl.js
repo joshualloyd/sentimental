@@ -14,6 +14,18 @@ module.exports.newAnalysis = (req, res, next) => {
     .catch(err => next(err));
 };
 
+module.exports.createSentimentAnalysis = (req, res, next) => {
+  console.log('req params', req.params);
+  const { Document } = req.app.get('models');
+  Document
+    .findById(req.params.documentId)
+    .then(foundDocument => {
+      // res.json(foundDocument);
+      res.render('analysis-sentiment-form', { foundDocument });
+    })
+    .catch(err => next(err));
+};
+
 module.exports.showAnalysisResultsJSON = (req, res, next) => {
   const { Analysis } = req.app.get('models');
   Analysis

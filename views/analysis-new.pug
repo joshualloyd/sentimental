@@ -4,23 +4,25 @@ block content
   h1 Analyze your document
   h2= foundDocument.name
   p= foundDocument.text
-    form(method="post" action=`/analyses/document/${foundDocument.id}`)
-      label(for="categories") Categories
-      input(type="text" id="categories" name="categories")
-      label(for="concepts") Concepts
-      input(type="text" id="concepts" name="concepts")
-      label(for="emotions") Emotions
-      input(type="text" id="emotions" name="emotions")
-      label(for="entities") Entities
-      input(type="text" id="entities" name="entities")
-      label(for="keywords") Keywords
-      input(type="text" id="keywords" name="keywords")
-      label(for="metadata") Metadata
-      input(type="checkbox" id="metadata" name="metadata")
-      label(for="relations") Relations
-      input(type="checkbox" id="relations" name="relations")
-      label(for="semantic_roles") Semantic Roles
-      input(type="checkbox" id="semantic_roles" name="semantic_roles")
-      label(for="sentiment") Sentiment
-      input(type="text" id="sentiment" name="sentiment")
-      button(type="submit") Analyze Now
+  #analysisform
+  script(src="/static/analysisform.js")
+    //- form(method="post" action=`/analyses/document/${foundDocument.id}`)
+    //-   label(for="categories") Categories
+    //-   input(type="text" id="categories" name="categories")
+    //-   label(for="concepts") Concepts
+    //-   input(type="text" id="concepts" name="concepts")
+    //-   label(for="emotions") Emotions
+    //-   input(type="text" id="emotions" name="emotions")
+    //-   label(for="entities") Entities
+    //-   input(type="text" id="entities" name="entities")
+    //-   label(for="keywords") Keywords
+    //-   input(type="text" id="keywords" name="keywords")
+    //-   label(for="metadata") Metadata
+    //-   input(type="checkbox" id="metadata" name="metadata")
+    //-   label(for="relations") Relations
+    //-   input(type="checkbox" id="relations" name="relations")
+    //-   label(for="semantic_roles") Semantic Roles
+    //-   input(type="checkbox" id="semantic_roles" name="semantic_roles")
+    //-   label(for="sentiment") Sentiment
+    //-   input(type="text" id="sentiment" name="sentiment")
+    //-   button(type="submit") Analyze Now
