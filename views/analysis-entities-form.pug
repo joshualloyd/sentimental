@@ -1,0 +1,8 @@
+extends index.pug
+
+block content
+  h1 Analyze your document
+  h2= foundDocument.name
+  p= foundDocument.text
+  #entitiesform
+  script(src="/static/entitiesform.js")

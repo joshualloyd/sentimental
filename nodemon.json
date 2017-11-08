@@ -1,0 +1,10 @@
+{
+  "ignore": [
+    "public/",
+    "node_modules/"
+  ],
+  "events": {
+    "restart": "npm run chart:entities:build",
+    "start": "npm run chart:entities:build"
+  }
+}
