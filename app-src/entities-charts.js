@@ -7,20 +7,31 @@ import {
   VictoryGroup,
   VictoryArea,
   VictoryPolarAxis,
-  VictoryLabel
+  VictoryLabel,
+  VictoryLegend,
+  VictoryContainer
 } from 'victory';
 
-// const characterData = [
-//   { joy: 4, fear: 2, anger: 1, disgust: 4, sadness: 5 },
-//   { joy: 2, fear: 1, anger: 2, disgust: 8, sadness: 3 }
+// const fakeData = [
+//   { joy: 0.4, fear: 2, anger: 1, disgust: 0.4, sadness: 0.5 },
+//   { joy: 0.2, fear: 0.1, anger: 0.2, disgust: 0.8, sadness: 0.3 }
 // ];
+
+// const LegendItem = (props) => <li key={props.entity} className="list-item">{props.entity.name}</li>;
+
+const Legend = ({ entities }) => (
+  <ul className="list">
+    {entities.map((entity, index) => <li key={index}>{entity.name}</li>)}
+  </ul>
+);
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: this.processData([{}]),
-      maxima: this.getMaxima([{}])
+      maxima: this.getMaxima([{}]),
+      entities: []
     };
   }
 
@@ -30,31 +41,39 @@ class App extends React.Component {
         console.log('response', response);
         this.setState({
           data: this.processData(response.data.entities.map((entity) => {
-            // let emotions = {};
-            // for(let value in entity.emotion) {
-            //   if()
-            //   let newValue = value * 100;
-            //   emo
-            // }
+            for (let value in entity.emotion) {
+              entity.emotion[value] = entity.emotion[value] * 100;
+            }
             return entity.emotion;
           })),
           maxima: this.getMaxima(response.data.entities.map((entity) => {
             return entity.emotion;
-          }))
+          })),
+          entities: response.data.entities.map((entity) => {
+            let entityObj = { name: entity.text };
+            return entityObj;
+          })
         });
+        console.log('state', this.state);
       })
       .catch(err => console.log(err));
   }
 
   getMaxima(data) {
-    const groupedData = Object.keys(data[0]).reduce((memo, key) => {
-      memo[key] = data.map((d) => d[key]);
-      return memo;
-    }, {});
-    return Object.keys(groupedData).reduce((memo, key) => {
-      memo[key] = Math.max(...groupedData[key]);
-      return memo;
-    }, {});
+    // const groupedData = Object.keys(data[0]).reduce((memo, key) => {
+    //   memo[key] = data.map((d) => d[key]);
+    //   return memo;
+    // }, {});
+    // console.log('grouped data', groupedData);
+    // return Object.keys(groupedData).reduce((memo, key) => {
+    //   memo[key] = Math.max(...groupedData[key]);
+    //   return memo;
+    // }, {});
+    return { joy: 100, fear: 100, anger: 100, disgust: 100, sadness: 100 }
+  }
+
+  listEntities() {
+
   }
 
   processData(data) {
@@ -69,47 +88,50 @@ class App extends React.Component {
 
   render() {
     return (
-      <VictoryChart polar
-        theme={VictoryTheme.material}
-        domain={{ y: [0, 1] }}
-      >
-        <VictoryGroup colorScale={["gold", "orange", "tomato"]}
-          style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
+      <div>
+        <Legend entities={this.state.entities} />
+        <VictoryChart polar
+          theme={VictoryTheme.material}
+          domain={{ y: [0, 1] }}
         >
-          {this.state.data.map((data, i) => {
-            return <VictoryArea key={i} data={data} />;
-          })}
-        </VictoryGroup>
-        {
-          Object.keys(this.state.maxima).map((key, i) => {
-            return (
-              <VictoryPolarAxis key={i} dependentAxis
-                style={{
-                  axisLabel: { padding: 10 },
-                  axis: { stroke: "none" },
-                  grid: { stroke: "grey", strokeWidth: 0.25, opacity: 0.5 }
-                }}
-                tickLabelComponent={
-                  <VictoryLabel labelPlacement="vertical" />
-                }
-                labelPlacement="perpendicular"
-                axisValue={i + 1} label={key}
-                tickFormat={(t) => Math.ceil(t * this.state.maxima[key])}
-                tickValues={[0.25, 0.5, 0.75]}
-              />
-            );
-          })
-        }
-        <VictoryPolarAxis
-          labelPlacement="parallel"
-          tickFormat={() => ""}
-          style={{
-            axis: { stroke: "none" },
-            grid: { stroke: "grey", opacity: 0.5 }
-          }}
-        />
+          <VictoryGroup colorScale={["gold", "orange", "tomato", "crimson", "firebrick"]}
+            style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
+          >
+            {this.state.data.map((data, i) => {
+              return <VictoryArea key={i} data={data} />;
+            })}
+          </VictoryGroup>
+          {
+            Object.keys(this.state.maxima).map((key, i) => {
+              return (
+                <VictoryPolarAxis key={i} dependentAxis
+                  style={{
+                    axisLabel: { padding: 10 },
+                    axis: { stroke: "none" },
+                    grid: { stroke: "grey", strokeWidth: 0.25, opacity: 0.5 }
+                  }}
+                  tickLabelComponent={
+                    <VictoryLabel labelPlacement="vertical" />
+                  }
+                  labelPlacement="perpendicular"
+                  axisValue={i + 1} label={key}
+                  tickFormat={(t) => Math.ceil(t * this.state.maxima[key])}
+                  tickValues={[0.25, 0.5, 0.75]}
+                />
+              );
+            })
+          }
+          <VictoryPolarAxis
+            labelPlacement="parallel"
+            tickFormat={() => ""}
+            style={{
+              axis: { stroke: "none" },
+              grid: { stroke: "grey", opacity: 0.5 }
+            }}
+          />
 
-      </VictoryChart>
+        </VictoryChart>
+      </div>
     );
   }
 }

@@ -19,18 +19,33 @@ var _victory = require('victory');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// const characterData = [
-//   { joy: 4, fear: 2, anger: 1, disgust: 4, sadness: 5 },
-//   { joy: 2, fear: 1, anger: 2, disgust: 8, sadness: 3 }
+// const fakeData = [
+//   { joy: 0.4, fear: 2, anger: 1, disgust: 0.4, sadness: 0.5 },
+//   { joy: 0.2, fear: 0.1, anger: 0.2, disgust: 0.8, sadness: 0.3 }
 // ];
+
+// const LegendItem = (props) => <li key={props.entity} className="list-item">{props.entity.name}</li>;
+
+var Legend = function Legend(_ref) {
+  var entities = _ref.entities;
+  return _react2.default.createElement(
+    'ul',
+    { className: 'list' },
+    entities.map(function (entity, index) {
+      return _react2.default.createElement(
+        'li',
+        { key: index },
+        entity.name
+      );
+    })
+  );
+};
 
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
@@ -42,7 +57,8 @@ var App = function (_React$Component) {
 
     _this.state = {
       data: _this.processData([{}]),
-      maxima: _this.getMaxima([{}])
+      maxima: _this.getMaxima([{}]),
+      entities: []
     };
     return _this;
   }
@@ -56,18 +72,20 @@ var App = function (_React$Component) {
         console.log('response', response);
         _this2.setState({
           data: _this2.processData(response.data.entities.map(function (entity) {
-            // let emotions = {};
-            // for(let value in entity.emotion) {
-            //   if()
-            //   let newValue = value * 100;
-            //   emo
-            // }
+            for (var value in entity.emotion) {
+              entity.emotion[value] = entity.emotion[value] * 100;
+            }
             return entity.emotion;
           })),
           maxima: _this2.getMaxima(response.data.entities.map(function (entity) {
             return entity.emotion;
-          }))
+          })),
+          entities: response.data.entities.map(function (entity) {
+            var entityObj = { name: entity.text };
+            return entityObj;
+          })
         });
+        console.log('state', _this2.state);
       }).catch(function (err) {
         return console.log(err);
       });
@@ -75,17 +93,20 @@ var App = function (_React$Component) {
   }, {
     key: 'getMaxima',
     value: function getMaxima(data) {
-      var groupedData = Object.keys(data[0]).reduce(function (memo, key) {
-        memo[key] = data.map(function (d) {
-          return d[key];
-        });
-        return memo;
-      }, {});
-      return Object.keys(groupedData).reduce(function (memo, key) {
-        memo[key] = Math.max.apply(Math, _toConsumableArray(groupedData[key]));
-        return memo;
-      }, {});
+      // const groupedData = Object.keys(data[0]).reduce((memo, key) => {
+      //   memo[key] = data.map((d) => d[key]);
+      //   return memo;
+      // }, {});
+      // console.log('grouped data', groupedData);
+      // return Object.keys(groupedData).reduce((memo, key) => {
+      //   memo[key] = Math.max(...groupedData[key]);
+      //   return memo;
+      // }, {});
+      return { joy: 100, fear: 100, anger: 100, disgust: 100, sadness: 100 };
     }
+  }, {
+    key: 'listEntities',
+    value: function listEntities() {}
   }, {
     key: 'processData',
     value: function processData(data) {
@@ -105,46 +126,51 @@ var App = function (_React$Component) {
       var _this3 = this;
 
       return _react2.default.createElement(
-        _victory.VictoryChart,
-        { polar: true,
-          theme: _victory.VictoryTheme.material,
-          domain: { y: [0, 1] }
-        },
+        'div',
+        null,
+        _react2.default.createElement(Legend, { entities: this.state.entities }),
         _react2.default.createElement(
-          _victory.VictoryGroup,
-          { colorScale: ["gold", "orange", "tomato"],
-            style: { data: { fillOpacity: 0.2, strokeWidth: 2 } }
+          _victory.VictoryChart,
+          { polar: true,
+            theme: _victory.VictoryTheme.material,
+            domain: { y: [0, 1] }
           },
-          this.state.data.map(function (data, i) {
-            return _react2.default.createElement(_victory.VictoryArea, { key: i, data: data });
-          })
-        ),
-        Object.keys(this.state.maxima).map(function (key, i) {
-          return _react2.default.createElement(_victory.VictoryPolarAxis, { key: i, dependentAxis: true,
+          _react2.default.createElement(
+            _victory.VictoryGroup,
+            { colorScale: ["gold", "orange", "tomato", "crimson", "firebrick"],
+              style: { data: { fillOpacity: 0.2, strokeWidth: 2 } }
+            },
+            this.state.data.map(function (data, i) {
+              return _react2.default.createElement(_victory.VictoryArea, { key: i, data: data });
+            })
+          ),
+          Object.keys(this.state.maxima).map(function (key, i) {
+            return _react2.default.createElement(_victory.VictoryPolarAxis, { key: i, dependentAxis: true,
+              style: {
+                axisLabel: { padding: 10 },
+                axis: { stroke: "none" },
+                grid: { stroke: "grey", strokeWidth: 0.25, opacity: 0.5 }
+              },
+              tickLabelComponent: _react2.default.createElement(_victory.VictoryLabel, { labelPlacement: 'vertical' }),
+              labelPlacement: 'perpendicular',
+              axisValue: i + 1, label: key,
+              tickFormat: function tickFormat(t) {
+                return Math.ceil(t * _this3.state.maxima[key]);
+              },
+              tickValues: [0.25, 0.5, 0.75]
+            });
+          }),
+          _react2.default.createElement(_victory.VictoryPolarAxis, {
+            labelPlacement: 'parallel',
+            tickFormat: function tickFormat() {
+              return "";
+            },
             style: {
-              axisLabel: { padding: 10 },
               axis: { stroke: "none" },
-              grid: { stroke: "grey", strokeWidth: 0.25, opacity: 0.5 }
-            },
-            tickLabelComponent: _react2.default.createElement(_victory.VictoryLabel, { labelPlacement: 'vertical' }),
-            labelPlacement: 'perpendicular',
-            axisValue: i + 1, label: key,
-            tickFormat: function tickFormat(t) {
-              return Math.ceil(t * _this3.state.maxima[key]);
-            },
-            tickValues: [0.25, 0.5, 0.75]
-          });
-        }),
-        _react2.default.createElement(_victory.VictoryPolarAxis, {
-          labelPlacement: 'parallel',
-          tickFormat: function tickFormat() {
-            return "";
-          },
-          style: {
-            axis: { stroke: "none" },
-            grid: { stroke: "grey", opacity: 0.5 }
-          }
-        })
+              grid: { stroke: "grey", opacity: 0.5 }
+            }
+          })
+        )
       );
     }
   }]);
