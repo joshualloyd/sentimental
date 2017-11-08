@@ -9,16 +9,22 @@
     "test": "mocha --watch --recursive -R spec",
     "db:build": "node_modules/.bin/sequelize db:migrate",
     "db:teardown": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "app:build": "browserify -e ./app-src/app.js -t babelify > ./public/app.js"
+    "app:build": "browserify -e ./app-src/app.js -t babelify > ./public/app.js",
+    "form:build": "browserify -e ./app-src/analysis-form.js -t babelify > ./public/analysisform.js",
+    "form:entities:build": "browserify -e ./app-src/entities-form.js -t babelify > ./public/entitiesform.js",
+    "chart:build": "browserify -e ./app-src/charts.js -t babelify > ./public/chart.js",
+    "chart:entities:build": "browserify -e ./app-src/entities-charts.js -t babelify > ./public/entitiescharts.js"
   },
   "author": "Joshua Lloyd",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.0",
     "babel": "^6.23.0",
     "babelify": "^8.0.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "browserify": "^14.5.0",
+    "d3": "^4.11.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "express-flash": "0.0.2",
@@ -31,9 +37,11 @@
     "pug": "^2.0.0-rc.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
     "sequelize": "^4.20.3",
+    "victory": "^0.24.1",
     "watson-developer-cloud": "^2.42.0"
   },
   "devDependencies": {
