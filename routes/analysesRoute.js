@@ -11,6 +11,7 @@ const {
   createSentimentAnalysis,
   createEntitiesAnalysis,
   newEntitiesAnalysis,
+  newSentimentAnalysis,
   showEntitiesAnalysisChart
 } = require('../controllers/analysesCtrl');
 
@@ -22,7 +23,8 @@ router.get('/analyses/chart/:analysisId', isLoggedIn, showEntitiesAnalysisChart)
 router.get('/analyses/:analysisId', isLoggedIn, showAnalysisResultsJSON);
 router.get('/analyses/arguments/:analysisId', isLoggedIn, showAnalysisArgumentsJSON);
 
-router.post('/analyses/document/:documentId', isLoggedIn, newEntitiesAnalysis);
+router.post('/analyses/entities/document/:documentId', isLoggedIn, newEntitiesAnalysis);
+router.post('/analyses/sentiment/document/:documentId', isLoggedIn, newSentimentAnalysis);
 router.post('/analyses/document/:documentId', isLoggedIn, createAnalysis);
 
 module.exports = router;

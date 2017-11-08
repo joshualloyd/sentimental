@@ -163,3 +163,7 @@ module.exports.showEntitiesAnalysisChart = (req, res, next) => {
   //  .catch(err => next(err));
   res.render('analysis-entities-chart');
 };
+
+module.exports.newSentimentAnalysis = (req, res, next) => {
+
+};
