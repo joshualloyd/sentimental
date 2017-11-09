@@ -64,7 +64,7 @@ var App = function (_React$Component) {
           limit = _state.limit;
 
       limit = parseInt(limit);
-      _axios2.default.post('/analyses/document/' + documentId, {
+      _axios2.default.post('/analyses/entities/document/' + documentId, {
         emotion: emotion,
         sentiment: sentiment,
         limit: limit

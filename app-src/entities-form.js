@@ -31,7 +31,7 @@ class App extends React.Component {
     let { emotion, sentiment, limit } = this.state;
     limit = parseInt(limit);
     axios
-      .post(`/analyses/document/${documentId}`, {
+      .post(`/analyses/entities/document/${documentId}`, {
         emotion,
         sentiment,
         limit

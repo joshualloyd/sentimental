@@ -17,6 +17,8 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -32,20 +34,29 @@ var App = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
-      value: [],
+      targets: [],
       count: 1,
       document: false
     };
+    _this.handleDocumentChange = _this.handleDocumentChange.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
-    key: 'handleChange',
-    value: function handleChange(i, event) {
-      var value = this.state.value.slice();
-      value[i] = event.target.value;
-      this.setState({ value: value });
+    key: 'handleTargetChange',
+    value: function handleTargetChange(i, event) {
+      var targets = this.state.targets.slice();
+      targets[i] = event.target.value;
+      this.setState({ targets: targets });
+    }
+  }, {
+    key: 'handleDocumentChange',
+    value: function handleDocumentChange(event) {
+      var target = event.target;
+      var value = target.type === 'checkbox' ? target.checked : target.value;
+      var name = target.name;
+      this.setState(_defineProperty({}, name, value));
     }
   }, {
     key: 'handleSubmit',
@@ -55,11 +66,11 @@ var App = function (_React$Component) {
       var documentId = location.pathname.split('/')[3];
       console.log('document id', documentId);
       var _state = this.state,
-          value = _state.value,
+          targets = _state.targets,
           document = _state.document;
 
-      _axios2.default.post('/analyses/document/' + documentId, {
-        value: value,
+      _axios2.default.post('/analyses/sentiment/document/' + documentId, {
+        targets: targets,
         document: document
       }).then(function (response) {
         // console.log('response from post', response.data.id);
@@ -76,11 +87,11 @@ var App = function (_React$Component) {
   }, {
     key: 'removeClick',
     value: function removeClick(i) {
-      var value = this.state.value.slice();
-      value.splice(i, 1);
+      var targets = this.state.targets.slice();
+      targets.splice(i, 1);
       this.setState({
         count: this.state.count - 1,
-        value: value
+        targets: targets
       });
     }
   }, {
@@ -91,7 +102,7 @@ var App = function (_React$Component) {
         uiItems.push(_react2.default.createElement(
           'div',
           { key: i },
-          _react2.default.createElement('input', { type: 'text', value: this.state.value[i] || '', onChange: this.handleChange.bind(this, i) }),
+          _react2.default.createElement('input', { type: 'text', value: this.state.targets[i] || '', onChange: this.handleTargetChange.bind(this, i) }),
           _react2.default.createElement('input', { type: 'button', value: 'remove', onClick: this.removeClick.bind(this, i) })
         ));
       }
@@ -108,7 +119,7 @@ var App = function (_React$Component) {
           { htmlFor: 'document' },
           'Add Document to sentiment analysis results'
         ),
-        _react2.default.createElement('input', { type: 'checkbox', id: 'document', name: 'document', checked: this.state.emotion, onChange: this.handleInputChange }),
+        _react2.default.createElement('input', { type: 'checkbox', id: 'document', name: 'document', checked: this.state.document, onChange: this.handleDocumentChange }),
         _react2.default.createElement(
           'label',
           null,

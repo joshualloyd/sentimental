@@ -6,17 +6,27 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: [],
+      targets: [],
       count: 1,
       document: false,
     };
+    this.handleDocumentChange = this.handleDocumentChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(i, event) {
-    let value = this.state.value.slice();
-    value[i] = event.target.value;
-    this.setState({ value });
+  handleTargetChange(i, event) {
+    let targets = this.state.targets.slice();
+    targets[i] = event.target.value;
+    this.setState({ targets });
+  }
+
+  handleDocumentChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
   }
 
   handleSubmit(event) {
@@ -24,10 +34,10 @@ class App extends React.Component {
     event.preventDefault();
     let documentId = location.pathname.split('/')[3];
     console.log('document id', documentId);
-    let { value, document } = this.state;
+    let { targets, document } = this.state;
     axios
-      .post(`/analyses/document/${documentId}`, {
-        value,
+      .post(`/analyses/sentiment/document/${documentId}`, {
+        targets,
         document
       })
       .then(response => {
@@ -42,11 +52,11 @@ class App extends React.Component {
   }
 
   removeClick(i) {
-    let value = this.state.value.slice();
-    value.splice(i, 1);
+    let targets = this.state.targets.slice();
+    targets.splice(i, 1);
     this.setState({
       count: this.state.count - 1,
-      value
+      targets
     })
   }
 
@@ -55,7 +65,7 @@ class App extends React.Component {
     for (let i = 0; i < this.state.count; i++) {
       uiItems.push(
         <div key={i}>
-          <input type="text" value={this.state.value[i] || ''} onChange={this.handleChange.bind(this, i)} />
+          <input type="text" value={this.state.targets[i] || ''} onChange={this.handleTargetChange.bind(this, i)} />
           <input type='button' value='remove' onClick={this.removeClick.bind(this, i)} />
         </div>
       )
@@ -67,7 +77,7 @@ class App extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="document">Add Document to sentiment analysis results</label>
-        <input type="checkbox" id="document" name="document" checked={this.state.emotion} onChange={this.handleInputChange} />
+        <input type="checkbox" id="document" name="document" checked={this.state.document} onChange={this.handleDocumentChange} />
         <label>What are the words you would like to target</label>
         {this.createUI()}
         <input type='button' value='add more' onClick={this.addClick.bind(this)} />
