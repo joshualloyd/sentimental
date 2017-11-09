@@ -207,3 +207,15 @@ module.exports.newSentimentAnalysis = (req, res, next) => {
     })
     .catch(err => next(err));
 };
+
+module.exports.showSentimentAnalysisChart = (req, res, next) => {
+  req.body.userId = req.session.passport.user.id;
+  // const { Analysis } = req.app.get('models');
+  // Analysis
+  //  .findById(req.params.analysisId)
+  //  .then(foundAnalysis => {
+
+  //  })
+  //  .catch(err => next(err));
+  res.render('analysis-sentiment-chart');
+};
