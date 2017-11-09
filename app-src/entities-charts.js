@@ -36,7 +36,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`/analyses/${location.pathname.split('/')[3]}`)
+    axios.get(`/analyses/${location.pathname.split('/')[4]}`)
       .then(response => {
         console.log('response', response);
         this.setState({

@@ -19,8 +19,8 @@ const {
 router.get('/analyses/document/:documentId/new', isLoggedIn, newAnalysis);
 router.get('/analyses/document/:documentId/new/sentiment', isLoggedIn, createSentimentAnalysis);
 router.get('/analyses/document/:documentId/new/entities', isLoggedIn, createEntitiesAnalysis);
-// router.get('/analyses/chart/:analysisId', isLoggedIn, showEntitiesAnalysisChart);
-router.get('/analyses/chart/:analysisId', isLoggedIn, showSentimentAnalysisChart)
+router.get('/analyses/chart/entities/:analysisId', isLoggedIn, showEntitiesAnalysisChart);
+router.get('/analyses/chart/sentiment/:analysisId', isLoggedIn, showSentimentAnalysisChart)
 
 router.get('/analyses/:analysisId', isLoggedIn, showAnalysisResultsJSON);
 router.get('/analyses/arguments/:analysisId', isLoggedIn, showAnalysisArgumentsJSON);

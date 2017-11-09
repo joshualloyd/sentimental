@@ -18,13 +18,25 @@ module.exports.createDocument = (req, res, next) => {
 };
 
 module.exports.showDocument = (req, res, next) => {
-  const { Document } = req.app.get('models');
+  const { Document, Analysis } = req.app.get('models');
+  let pageData = {};
   Document
     .findById(req.params.id)
     .then(foundDocument => {
       // console.log('the document', foundDocument);
       // res.json(foundDocument);
-      res.render('document-show', { foundDocument });
+      pageData.foundDocument = foundDocument;
+      return Analysis
+        .findAll({
+          where: {
+            documentId: req.params.id
+          }
+        });
+    })
+    .then(foundAnalyses => {
+      pageData.foundAnalyses = foundAnalyses;
+      // console.log('WHAT IS HERE!!!!!!!!!!!', pageData.foundAnalyses[0].results);
+      res.render('document-show', { pageData });
     })
     .catch(err => next(err));
 };

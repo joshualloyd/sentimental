@@ -1,9 +1,20 @@
 extends index.pug
 
 block content
-  h1= foundDocument.name
-  p= foundDocument.text
-  a(href=`/analyses/document/${foundDocument.id}/new/sentiment`)
+  h1= pageData.foundDocument.name
+  h3 List of Analyses already performed
+  ul
+    each analysis in pageData.foundAnalyses
+      if analysis.results.entities
+        a(href=`/analyses/chart/entities/${analysis.id}`)
+          li= analysis.id
+      else if analysis.results.sentiment
+        a(href=`/analyses/chart/sentiment/${analysis.id}`)
+          li= analysis.id
+      else
+        p uh oh
+  p= pageData.foundDocument.text
+  a(href=`/analyses/document/${pageData.foundDocument.id}/new/sentiment`)
     button Analyze the sentiment of this document
-  a(href=`/analyses/document/${foundDocument.id}/new/entities`)
+  a(href=`/analyses/document/${pageData.foundDocument.id}/new/entities`)
     button Analyze document entities

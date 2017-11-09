@@ -71,7 +71,7 @@ var App = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      _axios2.default.get('/analyses/' + location.pathname.split('/')[3]).then(function (response) {
+      _axios2.default.get('/analyses/' + location.pathname.split('/')[4]).then(function (response) {
         console.log('response', response);
         if (response.data.sentiment.document) {
           response.data.sentiment.targets.push({

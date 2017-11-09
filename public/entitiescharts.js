@@ -68,7 +68,7 @@ var App = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      _axios2.default.get('/analyses/' + location.pathname.split('/')[3]).then(function (response) {
+      _axios2.default.get('/analyses/' + location.pathname.split('/')[4]).then(function (response) {
         console.log('response', response);
         _this2.setState({
           data: _this2.processData(response.data.entities.map(function (entity) {
