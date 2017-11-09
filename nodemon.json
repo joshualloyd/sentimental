@@ -4,7 +4,7 @@
     "node_modules/"
   ],
   "events": {
-    "restart": "npm run chart:entities:build",
-    "start": "npm run chart:entities:build"
+    "restart": "npm run form:sentiment:build",
+    "start": "npm run form:sentiment:build"
   }
 }

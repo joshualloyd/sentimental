@@ -1,6 +1,9 @@
 extends index.pug
 
 block content
- h1= foundDocument.name
- p= foundDocument.text
- a(href=`/analyses/document/${foundDocument.id}/new`) Analyze This Document
+  h1= foundDocument.name
+  p= foundDocument.text
+  a(href=`/analyses/document/${foundDocument.id}/new/sentiment`)
+    button Analyze the sentiment of this document
+  a(href=`/analyses/document/${foundDocument.id}/new/entities`)
+    button Analyze document entities

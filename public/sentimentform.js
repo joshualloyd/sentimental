@@ -34,18 +34,25 @@ var App = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
-      emotion: false,
-      sentiment: false,
-      limit: 5
+      targets: [],
+      count: 1,
+      document: false
     };
-    _this.handleInputChange = _this.handleInputChange.bind(_this);
+    _this.handleDocumentChange = _this.handleDocumentChange.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
-    key: 'handleInputChange',
-    value: function handleInputChange(event) {
+    key: 'handleTargetChange',
+    value: function handleTargetChange(i, event) {
+      var targets = this.state.targets.slice();
+      targets[i] = event.target.value;
+      this.setState({ targets: targets });
+    }
+  }, {
+    key: 'handleDocumentChange',
+    value: function handleDocumentChange(event) {
       var target = event.target;
       var value = target.type === 'checkbox' ? target.checked : target.value;
       var name = target.name;
@@ -54,26 +61,52 @@ var App = function (_React$Component) {
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
-      // alert('A name was submitted: ' + JSON.stringify(this.state));
+      // alert('A name was submitted: ' + this.state.value);
       event.preventDefault();
       var documentId = location.pathname.split('/')[3];
       console.log('document id', documentId);
       var _state = this.state,
-          emotion = _state.emotion,
-          sentiment = _state.sentiment,
-          limit = _state.limit;
+          targets = _state.targets,
+          document = _state.document;
 
-      limit = parseInt(limit);
-      _axios2.default.post('/analyses/entities/document/' + documentId, {
-        emotion: emotion,
-        sentiment: sentiment,
-        limit: limit
+      _axios2.default.post('/analyses/sentiment/document/' + documentId, {
+        targets: targets,
+        document: document
       }).then(function (response) {
         // console.log('response from post', response.data.id);
         location.pathname = '/analyses/' + response.data.id;
       }).catch(function (err) {
         return console.log(err);
       });
+    }
+  }, {
+    key: 'addClick',
+    value: function addClick() {
+      this.setState({ count: this.state.count + 1 });
+    }
+  }, {
+    key: 'removeClick',
+    value: function removeClick(i) {
+      var targets = this.state.targets.slice();
+      targets.splice(i, 1);
+      this.setState({
+        count: this.state.count - 1,
+        targets: targets
+      });
+    }
+  }, {
+    key: 'createUI',
+    value: function createUI() {
+      var uiItems = [];
+      for (var i = 0; i < this.state.count; i++) {
+        uiItems.push(_react2.default.createElement(
+          'div',
+          { key: i },
+          _react2.default.createElement('input', { type: 'text', value: this.state.targets[i] || '', onChange: this.handleTargetChange.bind(this, i) }),
+          _react2.default.createElement('input', { type: 'button', value: 'remove', onClick: this.removeClick.bind(this, i) })
+        ));
+      }
+      return uiItems || null;
     }
   }, {
     key: 'render',
@@ -83,18 +116,17 @@ var App = function (_React$Component) {
         { onSubmit: this.handleSubmit },
         _react2.default.createElement(
           'label',
-          { htmlFor: 'emotion' },
-          ' Emotion'
+          { htmlFor: 'document' },
+          'Add Document to sentiment analysis results'
         ),
-        _react2.default.createElement('input', { type: 'checkbox', id: 'emotion', name: 'emotion', checked: this.state.emotion, onChange: this.handleInputChange }),
+        _react2.default.createElement('input', { type: 'checkbox', id: 'document', name: 'document', checked: this.state.document, onChange: this.handleDocumentChange }),
         _react2.default.createElement(
           'label',
-          { htmlFor: 'emotion' },
-          'Sentiment'
+          null,
+          'What are the words you would like to target'
         ),
-        _react2.default.createElement('input', { type: 'checkbox', id: 'sentiment', name: 'sentiment', checked: this.state.sentiment, onChange: this.handleInputChange }),
-        _react2.default.createElement('label', { htmlFor: 'limit' }),
-        _react2.default.createElement('input', { type: 'number', id: 'limit', name: 'limit', placeholder: 'number', value: this.state.limit, onChange: this.handleInputChange }),
+        this.createUI(),
+        _react2.default.createElement('input', { type: 'button', value: 'add more', onClick: this.addClick.bind(this) }),
         _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
       );
     }
@@ -103,7 +135,7 @@ var App = function (_React$Component) {
   return App;
 }(_react2.default.Component);
 
-_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('entitiesform'));
+_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('sentimentform'));
 
 },{"axios":2,"react":58,"react-dom":55}],2:[function(require,module,exports){
 module.exports = require('./lib/axios');
