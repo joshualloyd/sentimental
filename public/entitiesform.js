@@ -70,7 +70,7 @@ var App = function (_React$Component) {
         limit: limit
       }).then(function (response) {
         // console.log('response from post', response.data.id);
-        location.pathname = '/analyses/' + response.data.id;
+        location.pathname = '/analyses/chart/entities/' + response.data.id;
       }).catch(function (err) {
         return console.log(err);
       });
@@ -82,20 +82,40 @@ var App = function (_React$Component) {
         'form',
         { onSubmit: this.handleSubmit },
         _react2.default.createElement(
-          'label',
-          { htmlFor: 'emotion' },
-          ' Emotion'
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement(
+            'label',
+            { htmlFor: 'emotion' },
+            ' Emotion'
+          ),
+          _react2.default.createElement('input', { type: 'checkbox', className: 'form-control', id: 'emotion', name: 'emotion', checked: this.state.emotion, onChange: this.handleInputChange })
         ),
-        _react2.default.createElement('input', { type: 'checkbox', id: 'emotion', name: 'emotion', checked: this.state.emotion, onChange: this.handleInputChange }),
         _react2.default.createElement(
-          'label',
-          { htmlFor: 'emotion' },
-          'Sentiment'
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement(
+            'label',
+            { htmlFor: 'emotion' },
+            'Sentiment'
+          ),
+          _react2.default.createElement('input', { type: 'checkbox', className: 'form-control', id: 'sentiment', name: 'sentiment', checked: this.state.sentiment, onChange: this.handleInputChange })
         ),
-        _react2.default.createElement('input', { type: 'checkbox', id: 'sentiment', name: 'sentiment', checked: this.state.sentiment, onChange: this.handleInputChange }),
-        _react2.default.createElement('label', { htmlFor: 'limit' }),
-        _react2.default.createElement('input', { type: 'number', id: 'limit', name: 'limit', placeholder: 'number', value: this.state.limit, onChange: this.handleInputChange }),
-        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement(
+            'label',
+            { htmlFor: 'limit' },
+            'Limit'
+          ),
+          _react2.default.createElement('input', { type: 'number', className: 'form-control', id: 'limit', name: 'limit', placeholder: 'number', value: this.state.limit, onChange: this.handleInputChange })
+        ),
+        _react2.default.createElement(
+          'button',
+          { type: 'submit', className: 'btn btn-primary', value: 'Submit' },
+          'Submit'
+        )
       );
     }
   }]);

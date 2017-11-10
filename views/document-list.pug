@@ -1,7 +1,11 @@
 extends index.pug
 
 block content
-  ul
-    each document in foundDocuments
-      a(href=`/documents/${document.id}`)
-        li= document.name
+  .container
+    .row
+      div(class="col-md-10 offset-md-1")
+        h1 Your Documents
+        ul(class="list-group")
+          each document in foundDocuments
+            li(class="list-group-item")
+              a(href=`/documents/${document.id}`)= document.name

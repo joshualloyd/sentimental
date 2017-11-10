@@ -1,15 +1,29 @@
 doctype html
 html
   head
-    title Bangazon!
+    title Sentimental
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous")
+    script(src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous")
   body
     include partials/nav.pug
-    h1 Bangazon!
-    h2 #{globalWow}
 
   block content
-    button#showLogin login
-    button#showRegister register
-
+    .jumbotron
+      .container
+        h1(class="display-3") #{globalAppName}
+        p An app for analyzing sentiment and emotion of text
+        p
+          a(class="btn btn-primary btn-lg" id="showLogin" href="#" role="button") Login
+          a(class="btn btn-success btn-lg" id="showRegister" href="#" role="button") Register
+    .container
+      .row
+        .col-md-12
+          h2 So you think you understand writing...
+          p Let's face it, sometimes it can be hard to understand the bigger picture while keeping the smaller parts of a piece of writing together. We think we know what we're writing, we think we know what others are writing, but often times we don't. We find ourself amazed, confused and outraged by what others write. So I made Sentimental to help me out.
+          p I can copy/paste text into the input field and run different types of analysis to determine: sentiment, emotion, and entities. You can also put in anything into the input. Have a large essay you'd like to understand better, paste it in. A news article has weird bias, paste it in. Want to understand common themes in multiple pieces of writting from someone else, past it in.
+          p Give it a try.
+      hr
     script
       include ../client/client.js

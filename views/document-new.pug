@@ -1,10 +1,15 @@
 extends index.pug
 
 block content
-  h1 Upload your text
-    form(method="post" action="/documents")
-      label(for="name") Document Name
-      input(id="name" type="text" placeholder="Your document name" name="name" required)
-      label(for="body") Document Text
-      textarea(id="body" name="text")
-      button(type="submit") Upload
+  .container
+    .row
+      div(class="col-md-10 offset-md-1")
+        h1(style="margin-top: 1rem;") Upload your text
+        form(method="post" action="/documents")
+          .form-group
+            label(for="name") Document Name
+            input(class="form-control" id="name" type="text" placeholder="Your document name" name="name" required)
+          .form-group
+            label(for="body") Document Text
+            textarea(class="form-control" rows="5" id="body" name="text")
+          button(class="btn btn-primary" type="submit") Upload

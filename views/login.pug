@@ -1,12 +1,21 @@
 extends index.pug
 
 block content
-  h1 This is a form
-  if message
-    h2= message
+  .container
+    .row
+      div(class="col-md-10 offset-md-1")
+        h1 Please Log In
+        if message
+          h2= message
 
-  form(action="/login", method="post")
-    input(type="text" placeholder="username" name="username")
-    input(type="email" placeholder="email" name="email")
-    input(type="password" placeholder="password" name="password")
-    button(type="submit") login
+        form(action="/login", method="post")
+          .form-group
+            label(for="username") UserName
+            input(type="text" class="form-control" id="username" placeholder="username" name="username")
+          .form-group
+            label(for="email") Email Address
+            input(type="email" class="form-control" id="email" placeholder="email" name="email")
+          .form-group
+            label(for="password") Password
+            input(type="password" class="form-control" id="password" placeholder="password" name="password")
+          button(type="submit" class="btn btn-primary") login

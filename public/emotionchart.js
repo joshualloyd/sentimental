@@ -30,21 +30,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //   { joy: 0.2, fear: 0.1, anger: 0.2, disgust: 0.8, sadness: 0.3 }
 // ];
 
-// const LegendItem = (props) => <li key={props.entity} className="list-item">{props.entity.name}</li>;
-
+// const LegendItem = (props) => <li key={props.target} className="list-item">{props.target.name}</li>;
 var legendColors = [{ color: 'gold' }, { color: 'orange' }, { color: 'tomato' }, { color: 'crimson' }, { color: 'firebrick' }, { color: '#ff4775' }, { color: 'ff47d1' }, { color: '#d147ff' }, { color: '#7547ff' }, { color: '#4775ff' }];
 var chartColors = ["gold", "orange", "tomato", "crimson", "firebrick", "#ff4775", "ff47d1", "#d147ff", "#7547ff", "#4775ff"];
 
 var Legend = function Legend(_ref) {
-  var entities = _ref.entities;
+  var targets = _ref.targets;
   return _react2.default.createElement(
     'ul',
     { className: 'list' },
-    entities.map(function (entity, index) {
+    targets.map(function (target, index) {
       return _react2.default.createElement(
         'li',
         { key: index, style: legendColors[index] },
-        entity.name
+        target.name
       );
     })
   );
@@ -61,7 +60,7 @@ var App = function (_React$Component) {
     _this.state = {
       data: _this.processData([{}]),
       maxima: _this.getMaxima([{}]),
-      entities: []
+      targets: []
     };
     return _this;
   }
@@ -73,19 +72,25 @@ var App = function (_React$Component) {
 
       _axios2.default.get('/analyses/' + location.pathname.split('/')[4]).then(function (response) {
         console.log('response', response);
+        if (response.data.emotion.document) {
+          response.data.emotion.targets.push({
+            text: 'document',
+            emotion: response.data.emotion.document.emotion
+          });
+        }
         _this2.setState({
-          data: _this2.processData(response.data.entities.map(function (entity) {
-            for (var value in entity.emotion) {
-              entity.emotion[value] = entity.emotion[value] * 100;
+          data: _this2.processData(response.data.emotion.targets.map(function (target) {
+            for (var value in target.emotion) {
+              target.emotion[value] = target.emotion[value] * 100;
             }
-            return entity.emotion;
+            return target.emotion;
           })),
-          maxima: _this2.getMaxima(response.data.entities.map(function (entity) {
-            return entity.emotion;
+          maxima: _this2.getMaxima(response.data.emotion.targets.map(function (target) {
+            return target.emotion;
           })),
-          entities: response.data.entities.map(function (entity) {
-            var entityObj = { name: entity.text };
-            return entityObj;
+          targets: response.data.emotion.targets.map(function (target) {
+            var targetObj = { name: target.text };
+            return targetObj;
           })
         });
         console.log('state', _this2.state);
@@ -108,8 +113,8 @@ var App = function (_React$Component) {
       return { joy: 100, fear: 100, anger: 100, disgust: 100, sadness: 100 };
     }
   }, {
-    key: 'listEntities',
-    value: function listEntities() {}
+    key: 'listTargets',
+    value: function listTargets() {}
   }, {
     key: 'processData',
     value: function processData(data) {
@@ -131,7 +136,7 @@ var App = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(Legend, { entities: this.state.entities }),
+        _react2.default.createElement(Legend, { targets: this.state.targets }),
         _react2.default.createElement(
           _victory.VictoryChart,
           { polar: true,

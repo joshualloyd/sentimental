@@ -69,12 +69,12 @@ var App = function (_React$Component) {
           targets = _state.targets,
           document = _state.document;
 
-      _axios2.default.post('/analyses/sentiment/document/' + documentId, {
+      _axios2.default.post('/analyses/emotion/document/' + documentId, {
         targets: targets,
         document: document
       }).then(function (response) {
         // console.log('response from post', response.data.id);
-        location.pathname = '/analyses/chart/sentiment/' + response.data.id;
+        location.pathname = '/analyses/chart/emotion/' + response.data.id;
       }).catch(function (err) {
         return console.log(err);
       });
@@ -103,7 +103,7 @@ var App = function (_React$Component) {
           'div',
           { key: i },
           _react2.default.createElement('input', { type: 'text', className: 'form-control', value: this.state.targets[i] || '', onChange: this.handleTargetChange.bind(this, i) }),
-          _react2.default.createElement('input', { type: 'button', className: 'btn btn-danger', value: 'remove', onClick: this.removeClick.bind(this, i) })
+          _react2.default.createElement('input', { type: 'button', value: 'remove', className: 'btn btn-danger', onClick: this.removeClick.bind(this, i) })
         ));
       }
       return uiItems || null;
@@ -120,7 +120,7 @@ var App = function (_React$Component) {
           _react2.default.createElement(
             'label',
             { htmlFor: 'document' },
-            'Add Document to sentiment analysis results'
+            'Add Document to emotion analysis results'
           ),
           _react2.default.createElement('input', { type: 'checkbox', className: 'form-control', id: 'document', name: 'document', checked: this.state.document, onChange: this.handleDocumentChange })
         ),
@@ -143,7 +143,7 @@ var App = function (_React$Component) {
   return App;
 }(_react2.default.Component);
 
-_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('sentimentform'));
+_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('emotionform'));
 
 },{"axios":2,"react":58,"react-dom":55}],2:[function(require,module,exports){
 module.exports = require('./lib/axios');

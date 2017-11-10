@@ -1,9 +1,30 @@
 extends index.pug
 
 block content
-  h1= foundDocument.name
-  p= foundDocument.text
-  a(href=`/analyses/document/${foundDocument.id}/new/sentiment`)
-    button Analyze the sentiment of this document
-  a(href=`/analyses/document/${foundDocument.id}/new/entities`)
-    button Analyze document entities
+  .container
+    .row
+      div(class="col-md-10 offset-md-1")
+        h1= pageData.foundDocument.name
+        p= pageData.foundDocument.text
+      div(class="col-md-10 offset-md-1")
+        if pageData.foundAnalyses
+          h6 Current Analyses
+          ul(class="list-group")
+            each analysis in pageData.foundAnalyses
+              if analysis.results.entities
+                li(class="list-group-item")
+                  a(href=`/analyses/chart/entities/${analysis.id}`) Analysis Id: #{analysis.id} | Entities
+              else if analysis.results.sentiment
+                li(class="list-group-item")
+                  a(href=`/analyses/chart/sentiment/${analysis.id}`) Analysis Id: #{analysis.id} | Sentiment
+              else if analysis.results.emotion
+                li(class="list-group-item")
+                  a(href=`/analyses/chart/emotion/${analysis.id}`) Analysis Id: #{analysis.id} | Emotion
+              else
+                li(class="list-group-item") Woops!
+        a(href=`/analyses/document/${pageData.foundDocument.id}/new/sentiment`)
+          button(class="btn btn-primary" style="margin-right:1rem;margin-top:1rem;") Analyze the sentiment of this document
+        a(href=`/analyses/document/${pageData.foundDocument.id}/new/entities`)
+          button(class="btn btn-primary" style="margin-right:1rem;margin-top:1rem;") Analyze document entities
+        a(href=`/analyses/document/${pageData.foundDocument.id}/new/emotion`)
+          button(class="btn btn-primary" style="margin-right:1rem;margin-top:1rem;") Analyze document emotion
