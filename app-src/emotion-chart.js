@@ -17,8 +17,7 @@ import {
 //   { joy: 0.2, fear: 0.1, anger: 0.2, disgust: 0.8, sadness: 0.3 }
 // ];
 
-// const LegendItem = (props) => <li key={props.entity} className="list-item">{props.entity.name}</li>;
-
+// const LegendItem = (props) => <li key={props.target} className="list-item">{props.target.name}</li>;
 const legendColors = [
   { color: 'gold' }, { color: 'orange' }, { color: 'tomato' }, { color: 'crimson' }, { color: 'firebrick' },
   { color: '#ff4775' }, { color: 'ff47d1' }, { color: '#d147ff' }, { color: '#7547ff' }, { color: '#4775ff' }
@@ -28,9 +27,9 @@ const chartColors = [
   "#ff4775", "ff47d1", "#d147ff", "#7547ff", "#4775ff"
 ];
 
-const Legend = ({ entities }) => (
+const Legend = ({ targets }) => (
   <ul className="list">
-    {entities.map((entity, index) => <li key={index} style={legendColors[index]}>{entity.name}</li>)}
+    {targets.map((target, index) => <li key={index} style={legendColors[index]}>{target.name}</li>)}
   </ul>
 );
 
@@ -40,7 +39,7 @@ class App extends React.Component {
     this.state = {
       data: this.processData([{}]),
       maxima: this.getMaxima([{}]),
-      entities: []
+      targets: []
     };
   }
 
@@ -48,19 +47,25 @@ class App extends React.Component {
     axios.get(`/analyses/${location.pathname.split('/')[4]}`)
       .then(response => {
         console.log('response', response);
+        if (response.data.emotion.document) {
+          response.data.emotion.targets.push({
+            text: 'document',
+            emotion: response.data.emotion.document.emotion
+          });
+        }
         this.setState({
-          data: this.processData(response.data.entities.map((entity) => {
-            for (let value in entity.emotion) {
-              entity.emotion[value] = entity.emotion[value] * 100;
+          data: this.processData(response.data.emotion.targets.map((target) => {
+            for (let value in target.emotion) {
+              target.emotion[value] = target.emotion[value] * 100;
             }
-            return entity.emotion;
+            return target.emotion;
           })),
-          maxima: this.getMaxima(response.data.entities.map((entity) => {
-            return entity.emotion;
+          maxima: this.getMaxima(response.data.emotion.targets.map((target) => {
+            return target.emotion;
           })),
-          entities: response.data.entities.map((entity) => {
-            let entityObj = { name: entity.text };
-            return entityObj;
+          targets: response.data.emotion.targets.map((target) => {
+            let targetObj = { name: target.text };
+            return targetObj;
           })
         });
         console.log('state', this.state);
@@ -81,7 +86,7 @@ class App extends React.Component {
     return { joy: 100, fear: 100, anger: 100, disgust: 100, sadness: 100 }
   }
 
-  listEntities() {
+  listTargets() {
 
   }
 
@@ -98,7 +103,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Legend entities={this.state.entities} />
+        <Legend targets={this.state.targets} />
         <VictoryChart polar
           theme={VictoryTheme.material}
           domain={{ y: [0, 1] }}

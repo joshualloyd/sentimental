@@ -17,7 +17,7 @@ import {
 // ];
 
 const width = 500;
-const height = 500;
+const height = 300;
 const padding = { top: 80, bottom: 80, left: 20, right: 20 };
 
 const Legend = ({ targets }) => (
@@ -93,14 +93,30 @@ class App extends React.Component {
             <VictoryBar
               style={{
                 data: {
-                  fill: (d) => d.myLabel == 'positive' ? 'yellowgreen' : 'tomato',
-                  stroke: (d) => d.myLabel == 'positive' ? 'yellowgreen' : 'tomato',
+                  fill: (d) => {
+                    if (d.myLabel == 'positive') {
+                      return 'yellowgreen';
+                    } else if (d.myLabel == 'negative') {
+                      return 'tomato'
+                    } else {
+                      return 'black';
+                    }
+                  },
+                  stroke: (d) => {
+                    if (d.myLabel == 'positive') {
+                      return 'yellowgreen';
+                    } else if (d.myLabel == 'negative') {
+                      return 'tomato'
+                    } else {
+                      return 'black';
+                    }
+                  },
                   fillOpacity: 0.5,
                   strokeWidth: 3
                 }
               }}
               data={this.state.targets}
-              y={(d) => d.myLabel == 'positive' ? d.y : -d.y}
+              y={(data) => data.y}
               labels={(d) => `${d.y}% ${d.x}`}
             />
           </VictoryStack>

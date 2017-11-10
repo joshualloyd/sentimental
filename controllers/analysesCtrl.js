@@ -219,3 +219,71 @@ module.exports.showSentimentAnalysisChart = (req, res, next) => {
   //  .catch(err => next(err));
   res.render('analysis-sentiment-chart');
 };
+
+module.exports.createEmotionAnalysis = (req, res, next) => {
+  console.log('req params', req.params);
+  const { Document } = req.app.get('models');
+  Document
+    .findById(req.params.documentId)
+    .then(foundDocument => {
+      // res.json(foundDocument);
+      res.render('analysis-emotion-form', { foundDocument });
+    })
+    .catch(err => next(err));
+};
+
+module.exports.newEmotionAnalysis = (req, res, next) => {
+  req.body.userId = req.session.passport.user.id;
+  let natural_language_understanding = new NaturalLanguageUnderstandingV1({
+    'username': req.app.locals.ibm_username,
+    'password': req.app.locals.ibm_password,
+    'version_date': '2017-02-27'
+  });
+  const { Document } = req.app.get('models');
+  Document
+    .findById(req.params.documentId)
+    .then(foundDocument => {
+      // console.log('found document', foundDocument);
+      const parameters = {
+        text: foundDocument.text,
+        features: {
+          emotion: {
+            targets: req.body.targets,
+            document: req.body.document
+          }
+        }
+      }
+      natural_language_understanding.analyze(parameters, (err, response) => {
+        if (err) {
+          next(err);
+        } else {
+          const { Analysis } = req.app.get('models');
+          Analysis
+            .create({
+              documentId: req.params.documentId,
+              arguments: parameters,
+              results: response
+            })
+            .then(createdAnalysis => {
+              // console.log('created Analysis', createdAnalysis);
+              res.json(createdAnalysis);
+            })
+            .catch(err => next(err));
+        }
+      });
+
+    })
+    .catch(err => next(err));
+};
+
+module.exports.showEmotionAnalysisChart = (req, res, next) => {
+  req.body.userId = req.session.passport.user.id;
+  // const { Analysis } = req.app.get('models');
+  // Analysis
+  //  .findById(req.params.analysisId)
+  //  .then(foundAnalysis => {
+
+  //  })
+  //  .catch(err => next(err));
+  res.render('analysis-emotion-chart');
+};

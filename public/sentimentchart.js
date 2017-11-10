@@ -33,7 +33,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // ];
 
 var width = 500;
-var height = 500;
+var height = 300;
 var padding = { top: 80, bottom: 80, left: 20, right: 20 };
 
 var Legend = function Legend(_ref) {
@@ -137,18 +137,30 @@ var App = function (_React$Component) {
               style: {
                 data: {
                   fill: function fill(d) {
-                    return d.myLabel == 'positive' ? 'yellowgreen' : 'tomato';
+                    if (d.myLabel == 'positive') {
+                      return 'yellowgreen';
+                    } else if (d.myLabel == 'negative') {
+                      return 'tomato';
+                    } else {
+                      return 'black';
+                    }
                   },
                   stroke: function stroke(d) {
-                    return d.myLabel == 'positive' ? 'yellowgreen' : 'tomato';
+                    if (d.myLabel == 'positive') {
+                      return 'yellowgreen';
+                    } else if (d.myLabel == 'negative') {
+                      return 'tomato';
+                    } else {
+                      return 'black';
+                    }
                   },
                   fillOpacity: 0.5,
                   strokeWidth: 3
                 }
               },
               data: this.state.targets,
-              y: function y(d) {
-                return d.myLabel == 'positive' ? d.y : -d.y;
+              y: function y(data) {
+                return data.y;
               },
               labels: function labels(d) {
                 return d.y + '% ' + d.x;

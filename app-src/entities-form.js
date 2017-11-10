@@ -38,7 +38,7 @@ class App extends React.Component {
       })
       .then(response => {
         // console.log('response from post', response.data.id);
-        location.pathname = `/analyses/${response.data.id}`;
+        location.pathname = `/analyses/chart/entities/${response.data.id}`;
       })
       .catch(err => console.log(err));
   }
@@ -46,14 +46,20 @@ class App extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="emotion"> Emotion</label>
-        <input type="checkbox" id="emotion" name="emotion" checked={this.state.emotion} onChange={this.handleInputChange} />
-        <label htmlFor="emotion">Sentiment</label>
-        <input type="checkbox" id="sentiment" name="sentiment" checked={this.state.sentiment} onChange={this.handleInputChange} />
-        <label htmlFor="limit" />
-        <input type="number" id="limit" name="limit" placeholder="number" value={this.state.limit} onChange={this.handleInputChange} />
-        <input type="submit" value="Submit" />
-      </form>
+        <div className="form-group">
+          <label htmlFor="emotion"> Emotion</label>
+          <input type="checkbox" className="form-control" id="emotion" name="emotion" checked={this.state.emotion} onChange={this.handleInputChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="emotion">Sentiment</label>
+          <input type="checkbox" className="form-control" id="sentiment" name="sentiment" checked={this.state.sentiment} onChange={this.handleInputChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="limit">Limit</label>
+          <input type="number" className="form-control" id="limit" name="limit" placeholder="number" value={this.state.limit} onChange={this.handleInputChange} />
+        </div>
+        <button type="submit" className="btn btn-primary" value="Submit">Submit</button>
+      </form >
     );
   }
 }

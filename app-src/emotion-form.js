@@ -36,13 +36,13 @@ class App extends React.Component {
     console.log('document id', documentId);
     let { targets, document } = this.state;
     axios
-      .post(`/analyses/sentiment/document/${documentId}`, {
+      .post(`/analyses/emotion/document/${documentId}`, {
         targets,
         document
       })
       .then(response => {
         // console.log('response from post', response.data.id);
-        location.pathname = `/analyses/chart/sentiment/${response.data.id}`;
+        location.pathname = `/analyses/chart/emotion/${response.data.id}`;
       })
       .catch(err => console.log(err));
   }
@@ -66,7 +66,7 @@ class App extends React.Component {
       uiItems.push(
         <div key={i}>
           <input type="text" className="form-control" value={this.state.targets[i] || ''} onChange={this.handleTargetChange.bind(this, i)} />
-          <input type='button' className="btn btn-danger" value='remove' onClick={this.removeClick.bind(this, i)} />
+          <input type='button' value='remove' className="btn btn-danger" onClick={this.removeClick.bind(this, i)} />
         </div>
       )
     }
@@ -77,7 +77,7 @@ class App extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <label htmlFor="document">Add Document to sentiment analysis results</label>
+          <label htmlFor="document">Add Document to emotion analysis results</label>
           <input type="checkbox" className="form-control" id="document" name="document" checked={this.state.document} onChange={this.handleDocumentChange} />
         </div>
         <div className="form-group">
@@ -91,4 +91,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('sentimentform'));
+ReactDOM.render(<App />, document.getElementById('emotionform'));

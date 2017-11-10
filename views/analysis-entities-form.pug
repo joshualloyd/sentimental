@@ -1,8 +1,11 @@
 extends index.pug
 
 block content
-  h1 Analyze your document
-  h2= foundDocument.name
-  p= foundDocument.text
-  #entitiesform
-  script(src="/static/entitiesform.js")
+  .container
+    .row
+      div(class="col-md-10 offset-md-1")
+        h1 Analyze your document
+        h2= foundDocument.name
+        p= foundDocument.text
+        #entitiesform
+        script(src="/static/entitiesform.js")

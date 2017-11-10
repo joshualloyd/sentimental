@@ -15,7 +15,9 @@
     "chart:build": "browserify -e ./app-src/charts.js -t babelify > ./public/chart.js",
     "chart:entities:build": "browserify -e ./app-src/entities-charts.js -t babelify > ./public/entitiescharts.js",
     "form:sentiment:build": "browserify -e ./app-src/sentiment-form.js -t babelify > ./public/sentimentform.js",
-    "chart:sentiment:build": "browserify -e ./app-src/sentiment-chart.js -t babelify > ./public/sentimentchart.js"
+    "chart:sentiment:build": "browserify -e ./app-src/sentiment-chart.js -t babelify > ./public/sentimentchart.js",
+    "form:emotion:build": "browserify -e ./app-src/emotion-form.js -t babelify > ./public/emotionform.js",
+    "chart:emotion:build": "browserify -e ./app-src/emotion-chart.js -t babelify > ./public/emotionchart.js"
   },
   "author": "Joshua Lloyd",
   "license": "ISC",

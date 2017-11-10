@@ -1,14 +1,20 @@
 form#signin(name="signin" method="post" action="/register")
-  label(for="first_name") First name
-  input.text(id="first_name" name="first_name" type="text")
-  label(for="last_name") Last name
-  input.text(name="last_name" type="text")
-  label(for="username") Username
-  input.text(name="username" type="text")
-  label(for="email") Email Address
-  input.text(name="email" type="text")
-  label(for="password") Password
-  input(name="password" type="password")
-  label(for="confirmation") Confirmation
-  input(name="confirmation" type="password")
-  input.btn(type="submit" value="Sign In")
+  .form-group
+    label(for="first_name") First name
+    input.text(id="first_name" class="form-control" name="first_name" type="text")
+  .form-group
+    label(for="last_name") Last name
+    input.text(name="last_name" class="form-control" type="text")
+  .form-group
+    label(for="username") Username
+    input.text(name="username" class="form-control" type="text")
+  .form-group
+    label(for="email") Email Address
+    input.text(name="email" class="form-control" type="text")
+  .form-group
+    label(for="password") Password
+    input(name="password" class="form-control" type="password")
+  .form-group
+    label(for="confirmation") Confirmation
+    input(name="confirmation" class="form-control" type="password")
+  input(type="submit" class="btn btn-success" value="Sign In")
