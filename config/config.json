@@ -12,6 +12,7 @@
     "dialect": "postgres"
   },
   "production": {
+    "use_env_variable": "DATBASE_URL",
     "username": "root",
     "password": null,
     "database": "sentimental_prod",
