@@ -12,15 +12,15 @@
     "test": "mocha --watch --recursive -R spec",
     "db:build": "node_modules/.bin/sequelize db:migrate",
     "db:teardown": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "app:build": "browserify -e ./app-src/app.js -t babelify > ./public/app.js",
-    "form:build": "browserify -e ./app-src/analysis-form.js -t babelify > ./public/analysisform.js",
-    "form:entities:build": "browserify -e ./app-src/entities-form.js -t babelify > ./public/entitiesform.js",
-    "chart:build": "browserify -e ./app-src/charts.js -t babelify > ./public/chart.js",
-    "chart:entities:build": "browserify -e ./app-src/entities-charts.js -t babelify > ./public/entitiescharts.js",
-    "form:sentiment:build": "browserify -e ./app-src/sentiment-form.js -t babelify > ./public/sentimentform.js",
-    "chart:sentiment:build": "browserify -e ./app-src/sentiment-chart.js -t babelify > ./public/sentimentchart.js",
-    "form:emotion:build": "browserify -e ./app-src/emotion-form.js -t babelify > ./public/emotionform.js",
-    "chart:emotion:build": "browserify -e ./app-src/emotion-chart.js -t babelify > ./public/emotionchart.js"
+    "app:build": "browserify -e ./app-src/app.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/app.js",
+    "form:build": "browserify -e ./app-src/analysis-form.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/analysisform.js",
+    "form:entities:build": "browserify -e ./app-src/entities-form.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/entitiesform.js",
+    "chart:build": "browserify -e ./app-src/charts.js -t babelify | uglifyjs > ./public/chart.js",
+    "chart:entities:build": "browserify -e ./app-src/entities-charts.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/entitiescharts.js",
+    "form:sentiment:build": "browserify -e ./app-src/sentiment-form.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/sentimentform.js",
+    "chart:sentiment:build": "browserify -e ./app-src/sentiment-chart.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/sentimentchart.js",
+    "form:emotion:build": "browserify -e ./app-src/emotion-form.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/emotionform.js",
+    "chart:emotion:build": "browserify -e ./app-src/emotion-chart.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > ./public/emotionchart.js"
   },
   "author": "Joshua Lloyd",
   "license": "ISC",
@@ -58,7 +58,10 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "chai": "^4.1.2",
+    "envify": "^4.1.0",
     "mocha": "^4.0.1",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "uglify-js": "^3.3.12",
+    "uglifyify": "^4.0.5"
   }
 }
